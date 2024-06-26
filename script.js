@@ -1,10 +1,31 @@
 function printpdf() {
     var content = document.getElementById("resume");
-  
+
+    // Hide all buttons and checkboxes
     const allButtons = document.querySelectorAll("#print button");
     allButtons.forEach(button => {
-        button.classList.add("none");
+        button.style.display = "none";
     });
+
+    let allInputCheckboxes = document.querySelectorAll(".input-checkbox");
+    allInputCheckboxes.forEach(input => {
+        input.style.display = "none";
+    });
+
+    html2pdf(content, {
+        html2canvas: { scale: 1, logging: true, dpi: 500 },
+        onBeforeGenerate: function () {
+            // Show buttons and checkboxes again before generating PDF
+            allButtons.forEach(button => {
+                button.style.display = "block";
+            });
+            allInputCheckboxes.forEach(input => {
+                input.style.display = "block";
+            });
+        }
+    });
+}
+
     let allInputCheckboxes = document.querySelectorAll(".input-checkbox");
     allInputCheckboxes.forEach(input => {
         input.classList.add("none");
@@ -20,7 +41,7 @@ function printpdf() {
     html2pdf(content, {
         html2canvas: { scale: 1, logging: true, dpi: 500 }
     });
-  }
+  
   
   function addedu() {
     const head = document.createElement('div');
@@ -105,12 +126,6 @@ function printpdf() {
   }
   
   
-  function addAch() {
-    const head = document.createElement('div');
-    document.getElementById("achievement").appendChild(head);
-    head.innerHTML = ('<div class="achieve" ><span><input type="checkbox" class="input-checkbox"></span><span contenteditable="true">Write your achievement</span></div>');
-    saveresume();
-  }
   function remAch(event) {
     let val = 0;
     const allInputCheckboxes = event.target.parentElement.getElementsByClassName("input-checkbox");
